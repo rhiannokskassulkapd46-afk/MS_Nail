@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запись на маникюр и педикюр</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --text-secondary: #6c757d;
+            --primary-color: #e83e8c;
+            --primary-hover: #d91a75;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        body.dark {
+            --bg-color: #18191a;
+            --card-bg: #242526;
+            --text-color: #e4e6eb;
+            --text-secondary: #b0b3b8;
+            --border-color: #393a3b;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 80px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .header {
+            background: var(--card-bg);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .studio-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Карточки и блоки */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .banner {
+            background: linear-gradient(135deg, #e83e8c, #fd7e14);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .banner h2 { font-size: 20px; margin-bottom: 8px; }
+        .banner p { font-size: 14px; opacity: 0.9; }
+
+        /* Кнопки */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            margin-top: 8px;
+        }
+
+        /* Услуги */
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .service-item:last-child { border-bottom: none; }
+        .service-info h4 { font-size: 15px; margin-bottom: 4px; }
+        .service-info p { font-size: 13px; color: var(--text-secondary); }
+        .service-price { font-weight: 700; color: var(--primary-color); white-space: nowrap; margin-left: 12px; }
+
+        /* Портфолио */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .portfolio-item {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 160px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .portfolio-desc {
+            padding: 10px;
+            font-size: 13px;
+        }
+
+        /* Навигация снизу */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item div:first-child {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        /* Формы */
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="studio-title">Mari Nail Studio</div>
+        <div id="user-greeting" style="font-size: 13px; color: var(--text-secondary);">Гость</div>
+    </div>
+
+    <div class="container">
+        <!-- Главная -->
+        <div id="tab-home" class="tab-content active">
+            <div class="banner">
+                <h2>Скидка 15% на первый визит!</h2>
+                <p>Запишитесь онлайн через приложение и получите уход для рук в подарок.</p>
+            </div>
+            
+            <div class="card">
+                <h3 style="margin-bottom: 12px;">Быстрые действия</h3>
+                <button class="btn" onclick="switchTab('booking')">📅 Записаться на процедуру</button>
+                <button class="btn btn-secondary" onclick="switchTab('portfolio')">📸 Посмотреть портфолио</button>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 8px;">📍 Контакты</h3>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">г. Пенза, ул. 65-летия Победы</p>
+                <p style="font-size: 14px; color: var(--text-secondary);">Режим работы: Ежедневно с 9:00 до 20:00</p>
+            </div>
+        </div>
+
+        <!-- Услуги и Онлайн-запись -->
+        <div id="tab-booking" class="tab-content">
+            <div class="card">
+                <h3 style="margin-bottom: 14px;">Шаг 1: Выберите услугу</h3>
+                <div class="service-item">
+                    <div class="service-info">
+                        <h4>Маникюр комбинированный + гель-лак</h4>
+                        <p>Снятие, маникюр, выравнивание, покрытие</p>
+                    </div>
+                    <div class="service-price">1800 ₽</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-info">
+                        <h4>Смарт-педикюр полный</h4>
+                        <p>Обработка стоп дисками + пальчики + покрытие</p>
+                    </div>
+                    <div class="service-price">2200 ₽</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-info">
+                        <h4>Комплекс: Маникюр + Педикюр</h4>
+                        <p>Одновременный уход в 4 руки</p>
+                    </div>
+                    <div class="service-price">3800 ₽</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 14px;">Шаг 2: Выберите дату и время</h3>
+                <label>Дата визита</label>
+                <input type="date" id="book-date">
+                
+                <label>Свободное время</label>
+                <select id="book-time">
+                    <option>10:00</option>
+                    <option>12:30</option>
+                    <option>15:00</option>
+                    <option>17:30</option>
+                </select>
+
+                <label>Ваше имя и телефон</label>
+                <input type="text" id="client-name" placeholder="Имя">
+                <input type="tel" id="client-phone" placeholder="+7 (900) 000-00-00">
+
+                <button class="btn" onclick="makeBooking()">Подтвердить запись</button>
+            </div>
+        </div>
+
+        <!-- Портфолио -->
+        <div id="tab-portfolio" class="tab-content">
+            <h3 style="margin-bottom: 12px;">Наши работы</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <div class="portfolio-img">Фото дизайна 1</div>
+                    <div class="portfolio-desc">Френч + молочный гель</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-img">Фото дизайна 2</div>
+                    <div class="portfolio-desc">Красный глянцевый нюд</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-img">Фото дизайна 3</div>
+                    <div class="portfolio-desc">Светоотражающий топ</div>
+                </div>
+                <div class="portfolio-item">
+                    <div class="portfolio-img">Фото дизайна 4</div>
+                    <div class="portfolio-desc">Смарт-педикюр</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Новинки -->
+        <div id="tab-news" class="tab-content">
+            <h3 style="margin-bottom: 12px;">Новинки и тренды сезона</h3>
+            <div class="card">
+                <h4>✨ Коллекция «Кошачий глаз 5D»</h4>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 6px;">Поступили новые переливающиеся оттенки для глубокого космо-эффекта на ногтях.</p>
+            </div>
+            <div class="card">
+                <h4>🌿 Японский эко-маникюр</h4>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 6px;">Глубокое восстановление ногтевой пластины натуральной пастой с пчелиным воском.</p>
+            </div>
+        </div>
+
+        <!-- Кабинет / Отзывы -->
+        <div id="tab-profile" class="tab-content">
+            <div class="card">
+                <h3>Мои записи</h3>
+                <div id="my-bookings" style="font-size: 14px; color: var(--text-secondary); margin-top: 10px;">
+                    У вас пока нет активных записей.
+                </div>
+            </div>
+            <div class="card">
+                <h3>Оставить отзыв</h3>
+                <textarea placeholder="Ваше мнение о студии..."></textarea>
+                <button class="btn" onclick="alert('Спасибо за ваш отзыв!')">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Нижняя навигация -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
+            <div>🏠</div>Главная
+        </div>
+        <div class="nav-item" onclick="switchTab('booking')" id="nav-booking">
+            <div>📅</div>Запись
+        </div>
+        <div class="nav-item" onclick="switchTab('portfolio')" id="nav-portfolio">
+            <div>📸</div>Портфолио
+        </div>
+        <div class="nav-item" onclick="switchTab('news')" id="nav-news">
+            <div>✨</div>Новинки
+        </div>
+        <div class="nav-item" onclick="switchTab('profile')" id="nav-profile">
+            <div>👤</div>Кабинет
+        </div>
+    </div>
+
+    <script>
+        // Интеграция с Telegram WebApp (если открыто внутри Телеграма)
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            document.getElementById('user-greeting').innerText = tg.initDataUnsafe.user.first_name;
+        }
+        if (tg.colorScheme === 'dark') {
+            document.body.classList.add('dark');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function makeBooking() {
+            const date = document.getElementById('book-date').value;
+            const time = document.getElementById('book-time').value;
+            const name = document.getElementById('client-name').value;
+            
+            if(!date || !name) {
+                alert('Пожалуйста, укажите дату и ваше имя!');
+                return;
+            }
+
+            document.getElementById('my-bookings').innerHTML = `
+                <div style="background: rgba(232, 62, 140, 0.1); padding: 10px; border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                    <strong>Запись подтверждена!</strong><br>
+                    Дата: ${date} в ${time}<br>
+                    Клиент: ${name}
+                </div>
+            `;
+            alert('Запись успешно создана!');
+            switchTab('profile');
+        }
+    </script>
+</body>
+</html>
