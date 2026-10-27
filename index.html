@@ -7,14 +7,14 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #f7f5f0;        /* Мягкий бежевый фон */
-            --card-bg: #ffffff;         /* Белые карточки */
-            --text-color: #2c3531;      /* Темно-зеленый глубокий текст */
-            --text-secondary: #707973;  /* Серо-зеленый приглушенный */
-            --primary-color: #587d71;   /* Благородный приглушенный зеленый */
-            --primary-hover: #46645a;   /* Темнее при наведении */
-            --accent-bg: #eaf1ee;       /* Светло-зеленый акцентный фон */
-            --border-color: #e2ded5;    /* Мягкая граница */
+            --bg-color: #f7f5f0;
+            --card-bg: #ffffff;
+            --text-color: #2c3531;
+            --text-secondary: #707973;
+            --primary-color: #587d71;
+            --primary-hover: #46645a;
+            --accent-bg: #eaf1ee;
+            --border-color: #e2ded5;
             --shadow: 0 4px 16px rgba(44, 53, 49, 0.06);
         }
 
@@ -98,7 +98,6 @@
         .banner h2 { font-size: 20px; margin-bottom: 8px; font-weight: 600; }
         .banner p { font-size: 14px; opacity: 0.95; line-height: 1.4; }
 
-        /* Стиль кнопок как в Telegram */
         .btn {
             background-color: var(--primary-color);
             color: white;
@@ -128,7 +127,6 @@
             margin-top: 10px;
         }
 
-        /* Интерактивные карточки услуг */
         .service-card {
             background: var(--bg-color);
             border: 2px solid var(--border-color);
@@ -186,7 +184,6 @@
             color: var(--text-color);
         }
 
-        /* Навигация снизу в стиле Telegram */
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -220,7 +217,6 @@
             margin-bottom: 2px;
         }
 
-        /* Формы */
         input, select, textarea {
             width: 100%;
             padding: 12px;
@@ -269,7 +265,7 @@
 
             <div class="card">
                 <h3 style="margin-bottom: 8px; font-size: 16px;">📍 Контакты студии</h3>
-                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 6px;">г. Пенза, ул. Генерала Глазунова 11</p>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 6px;">г. Пенза, ул. 65-летия Победы</p>
                 <p style="font-size: 14px; color: var(--text-secondary);">Ежедневно с 9:00 до 20:00</p>
             </div>
         </div>
@@ -277,9 +273,8 @@
         <!-- Онлайн-запись с выбором услуг -->
         <div id="tab-booking" class="tab-content">
             <div class="card">
-                <h3 style="margin-bottom: 14px; font-size: 16px;">Шаг 1: Выберите услугу (нажатием)</h3>
+                <h3 style="margin-bottom: 14px; font-size: 16px;">Шаг 1: Выберите услугу</h3>
                 
-                <!-- Интерактивные карточки услуг -->
                 <div class="service-card selected" id="srv-1" onclick="selectService('Маникюр + гель-лак (1800 ₽)', 'srv-1')">
                     <div class="service-info">
                         <h4>Маникюр + гель-лак</h4>
@@ -393,14 +388,11 @@
             document.body.classList.add('dark');
         }
 
-        // Хранение выбранной услуги (по умолчанию первая)
         let selectedService = "Маникюр + гель-лак (1800 ₽)";
 
         function selectService(serviceName, elementId) {
             selectedService = serviceName;
-            // Убираем выделение со всех карточек
             document.querySelectorAll('.service-card').forEach(el => el.classList.remove('selected'));
-            // Выделяем нажатую карточку
             document.getElementById(elementId).classList.add('selected');
         }
 
@@ -433,20 +425,20 @@
             };
 
             if (window.Telegram && window.Telegram.WebApp) {
+                alert("DEBUG: Отправляем данные боту..."); // Отладочное окно для проверки
                 tg.sendData(JSON.stringify(bookingData));
             } else {
                 alert('Ошибка: открыто не в Telegram!');
                 return;
             }
 
-            // Понятное отображение статуса записи для пользователя в Кабинете
             document.getElementById('my-bookings').innerHTML = `
                 <div style="background: var(--accent-bg); padding: 12px; border-radius: 10px; border-left: 3px solid var(--primary-color);">
-                    <strong style="color: var(--primary-color);">✅ Запись успешно оформлена!</strong><br>
+                    <strong style="color: var(--primary-color);">✅ Запись отправлена мастеру!</strong><br>
                     <strong>Услуга:</strong> ${selectedService}<br>
                     <strong>Дата:</strong> ${date} в ${time}<br>
                     <strong>Имя:</strong> ${name} (${phone})<br><br>
-                    <em>Информация отправлена мастеру. Окно закроется автоматически...</em>
+                    <em>Окно закроется автоматически...</em>
                 </div>
             `;
             
