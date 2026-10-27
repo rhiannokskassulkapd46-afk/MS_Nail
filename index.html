@@ -362,7 +362,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         // Интеграция с Telegram WebApp (если открыто внутри Телеграма)
         let tg = window.Telegram.WebApp;
         tg.expand();
@@ -386,10 +386,27 @@
             const date = document.getElementById('book-date').value;
             const time = document.getElementById('book-time').value;
             const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
             
-            if(!date || !name) {
-                alert('Пожалуйста, укажите дату и ваше имя!');
+            if(!date || !name || !phone) {
+                alert('Пожалуйста, укажите дату, имя и телефон!');
                 return;
+            }
+
+            // Собираем данные в объект
+            const bookingData = {
+                service: "Маникюр / Педикюр (Запись из мини-аппа)",
+                date: date,
+                time: time,
+                clientName: name,
+                clientPhone: phone
+            };
+
+            // ГЛАВНОЕ: Отправляем данные в ваш Telegram-бот на сервере
+            if (window.Telegram && window.Telegram.WebApp) {
+                tg.sendData(JSON.stringify(bookingData));
+            } else {
+                alert('Ошибка: приложение открыто не в Telegram!');
             }
 
             document.getElementById('my-bookings').innerHTML = `
@@ -399,7 +416,8 @@
                     Клиент: ${name}
                 </div>
             `;
-            alert('Запись успешно создана!');
+            
+            alert('Запись успешно отправлена администратору!');
             switchTab('profile');
         }
     </script>
