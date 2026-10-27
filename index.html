@@ -72,7 +72,6 @@
             display: block;
         }
 
-        /* Карточки и блоки */
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -93,7 +92,6 @@
         .banner h2 { font-size: 20px; margin-bottom: 8px; }
         .banner p { font-size: 14px; opacity: 0.9; }
 
-        /* Кнопки */
         .btn {
             background-color: var(--primary-color);
             color: white;
@@ -119,7 +117,6 @@
             margin-top: 8px;
         }
 
-        /* Услуги */
         .service-item {
             display: flex;
             justify-content: space-between;
@@ -133,7 +130,6 @@
         .service-info p { font-size: 13px; color: var(--text-secondary); }
         .service-price { font-weight: 700; color: var(--primary-color); white-space: nowrap; margin-left: 12px; }
 
-        /* Портфолио */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -163,7 +159,6 @@
             font-size: 13px;
         }
 
-        /* Навигация снизу */
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -195,7 +190,6 @@
             margin-bottom: 2px;
         }
 
-        /* Формы */
         input, select, textarea {
             width: 100%;
             padding: 10px;
@@ -249,24 +243,10 @@
                 <h3 style="margin-bottom: 14px;">Шаг 1: Выберите услугу</h3>
                 <div class="service-item">
                     <div class="service-info">
-                        <h4>Маникюр комбинированный + гель-лак</h4>
+                        <h4 id="service-name-1">Маникюр комбинированный + гель-лак</h4>
                         <p>Снятие, маникюр, выравнивание, покрытие</p>
                     </div>
                     <div class="service-price">1800 ₽</div>
-                </div>
-                <div class="service-item">
-                    <div class="service-info">
-                        <h4>Смарт-педикюр полный</h4>
-                        <p>Обработка стоп дисками + пальчики + покрытие</p>
-                    </div>
-                    <div class="service-price">2200 ₽</div>
-                </div>
-                <div class="service-item">
-                    <div class="service-info">
-                        <h4>Комплекс: Маникюр + Педикюр</h4>
-                        <p>Одновременный уход в 4 руки</p>
-                    </div>
-                    <div class="service-price">3800 ₽</div>
                 </div>
             </div>
 
@@ -284,7 +264,7 @@
                 </select>
 
                 <label>Ваше имя и телефон</label>
-                <input type="text" id="client-name" placeholder="Имя">
+                <input type="text" id="client-name" placeholder="Ваше имя">
                 <input type="tel" id="client-phone" placeholder="+7 (900) 000-00-00">
 
                 <button class="btn" onclick="makeBooking()">Подтвердить запись</button>
@@ -296,49 +276,32 @@
             <h3 style="margin-bottom: 12px;">Наши работы</h3>
             <div class="portfolio-grid">
                 <div class="portfolio-item">
-                    <div class="portfolio-img">Фото дизайна 1</div>
+                    <div class="portfolio-img">Фото 1</div>
                     <div class="portfolio-desc">Френч + молочный гель</div>
                 </div>
                 <div class="portfolio-item">
-                    <div class="portfolio-img">Фото дизайна 2</div>
+                    <div class="portfolio-img">Фото 2</div>
                     <div class="portfolio-desc">Красный глянцевый нюд</div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-img">Фото дизайна 3</div>
-                    <div class="portfolio-desc">Светоотражающий топ</div>
-                </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-img">Фото дизайна 4</div>
-                    <div class="portfolio-desc">Смарт-педикюр</div>
                 </div>
             </div>
         </div>
 
         <!-- Новинки -->
         <div id="tab-news" class="tab-content">
-            <h3 style="margin-bottom: 12px;">Новинки и тренды сезона</h3>
+            <h3 style="margin-bottom: 12px;">Новинки сезона</h3>
             <div class="card">
                 <h4>✨ Коллекция «Кошачий глаз 5D»</h4>
-                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 6px;">Поступили новые переливающиеся оттенки для глубокого космо-эффекта на ногтях.</p>
-            </div>
-            <div class="card">
-                <h4>🌿 Японский эко-маникюр</h4>
-                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 6px;">Глубокое восстановление ногтевой пластины натуральной пастой с пчелиным воском.</p>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 6px;">Новые переливающиеся оттенки.</p>
             </div>
         </div>
 
-        <!-- Кабинет / Отзывы -->
+        <!-- Кабинет -->
         <div id="tab-profile" class="tab-content">
             <div class="card">
-                <h3>Мои записи</h3>
+                <h3>Статус записи</h3>
                 <div id="my-bookings" style="font-size: 14px; color: var(--text-secondary); margin-top: 10px;">
-                    У вас пока нет активных записей.
+                    Вы еще не оставляли заявок в этой сессии.
                 </div>
-            </div>
-            <div class="card">
-                <h3>Оставить отзыв</h3>
-                <textarea placeholder="Ваше мнение о студии..."></textarea>
-                <button class="btn" onclick="alert('Спасибо за ваш отзыв!')">Отправить</button>
             </div>
         </div>
     </div>
@@ -362,10 +325,10 @@
         </div>
     </div>
 
-<script>
-        // Интеграция с Telegram WebApp (если открыто внутри Телеграма)
+    <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
+        
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             document.getElementById('user-greeting').innerText = tg.initDataUnsafe.user.first_name;
         }
@@ -383,42 +346,51 @@
         }
 
         function makeBooking() {
+            const service = "Маникюр комбинированный + гель-лак";
             const date = document.getElementById('book-date').value;
             const time = document.getElementById('book-time').value;
             const name = document.getElementById('client-name').value;
             const phone = document.getElementById('client-phone').value;
             
             if(!date || !name || !phone) {
-                alert('Пожалуйста, укажите дату, имя и телефон!');
+                alert('Пожалуйста, заполните дату, имя и телефон!');
                 return;
             }
 
-            // Собираем данные в объект
+            // Упаковываем данные для отправки боту
             const bookingData = {
-                service: "Маникюр / Педикюр (Запись из мини-аппа)",
+                service: service,
                 date: date,
                 time: time,
                 clientName: name,
                 clientPhone: phone
             };
 
-            // ГЛАВНОЕ: Отправляем данные в ваш Telegram-бот на сервере
+            // Отправляем данные в Telegram бот
             if (window.Telegram && window.Telegram.WebApp) {
-                tg.sendData(JSON.stringify(bookingData));
+                tg.sendData(JSON.stringify(bookingData)); // Передает данные в bot.py
             } else {
-                alert('Ошибка: приложение открыто не в Telegram!');
+                alert('Ошибка: открыто не в Telegram!');
+                return;
             }
 
+            // Визуальное подтверждение для пользователя
             document.getElementById('my-bookings').innerHTML = `
-                <div style="background: rgba(232, 62, 140, 0.1); padding: 10px; border-radius: 8px; border-left: 3px solid var(--primary-color);">
-                    <strong>Запись подтверждена!</strong><br>
-                    Дата: ${date} в ${time}<br>
-                    Клиент: ${name}
+                <div style="background: rgba(232, 62, 140, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                    <strong style="color: var(--primary-color);">✅ Запись успешно оформлена!</strong><br>
+                    <strong>Услуга:</strong> ${service}<br>
+                    <strong>Дата:</strong> ${date} в ${time}<br>
+                    <strong>Клиент:</strong> ${name} (${phone})<br><br>
+                    <em>Информация отправлена мастеру. Окно закроется автоматически...</em>
                 </div>
             `;
             
-            alert('Запись успешно отправлена администратору!');
             switchTab('profile');
+
+            // Автоматически закрываем WebApp через 2.5 секунды, чтобы пользователь вернулся в чат
+            setTimeout(function() {
+                tg.close();
+            }, 2500);
         }
     </script>
 </body>
