@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Запись на маникюр и педикюр</title>
+    <title>Mari Nail Studio | Запись</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #212529;
-            --text-secondary: #6c757d;
-            --primary-color: #e83e8c;
-            --primary-hover: #d91a75;
-            --border-color: #dee2e6;
-            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --bg-color: #f7f5f0;        /* Мягкий бежевый фон */
+            --card-bg: #ffffff;         /* Белые карточки */
+            --text-color: #2c3531;      /* Темно-зеленый глубокий текст */
+            --text-secondary: #707973;  /* Серо-зеленый приглушенный */
+            --primary-color: #587d71;   /* Благородный приглушенный зеленый */
+            --primary-hover: #46645a;   /* Темнее при наведении */
+            --accent-bg: #eaf1ee;       /* Светло-зеленый акцентный фон */
+            --border-color: #e2ded5;    /* Мягкая граница */
+            --shadow: 0 4px 16px rgba(44, 53, 49, 0.06);
         }
 
         body.dark {
-            --bg-color: #18191a;
-            --card-bg: #242526;
-            --text-color: #e4e6eb;
-            --text-secondary: #b0b3b8;
-            --border-color: #393a3b;
-            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            --bg-color: #1a201e;
+            --card-bg: #242c29;
+            --text-color: #e8edea;
+            --text-secondary: #a3b2ab;
+            --primary-color: #6b9485;
+            --primary-hover: #7ba897;
+            --accent-bg: #2e3b36;
+            --border-color: #36423d;
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
         }
 
         * {
@@ -36,13 +40,13 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 80px;
+            padding-bottom: 90px;
             transition: background 0.3s, color 0.3s;
         }
 
         .header {
             background: var(--card-bg);
-            padding: 16px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -56,6 +60,7 @@
             font-size: 18px;
             font-weight: 700;
             color: var(--primary-color);
+            letter-spacing: 0.5px;
         }
 
         .container {
@@ -74,36 +79,42 @@
 
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 18px;
             margin-bottom: 16px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
         }
 
         .banner {
-            background: linear-gradient(135deg, #e83e8c, #fd7e14);
+            background: linear-gradient(135deg, #587d71, #849b8e);
             color: white;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 22px;
             margin-bottom: 16px;
+            box-shadow: var(--shadow);
         }
 
-        .banner h2 { font-size: 20px; margin-bottom: 8px; }
-        .banner p { font-size: 14px; opacity: 0.9; }
+        .banner h2 { font-size: 20px; margin-bottom: 8px; font-weight: 600; }
+        .banner p { font-size: 14px; opacity: 0.95; line-height: 1.4; }
 
+        /* Стиль кнопок как в Telegram */
         .btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
+            border-radius: 10px;
+            padding: 14px 20px;
             font-size: 15px;
             font-weight: 600;
             width: 100%;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
             text-align: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .btn:hover {
@@ -113,22 +124,36 @@
         .btn-secondary {
             background-color: transparent;
             color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            margin-top: 8px;
+            border: 1.5px solid var(--primary-color);
+            margin-top: 10px;
         }
 
-        .service-item {
+        /* Интерактивные карточки услуг */
+        .service-card {
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s ease;
         }
 
-        .service-item:last-child { border-bottom: none; }
-        .service-info h4 { font-size: 15px; margin-bottom: 4px; }
+        .service-card:hover {
+            border-color: var(--primary-color);
+        }
+
+        .service-card.selected {
+            border-color: var(--primary-color);
+            background-color: var(--accent-bg);
+        }
+
+        .service-info h4 { font-size: 15px; margin-bottom: 4px; font-weight: 600; }
         .service-info p { font-size: 13px; color: var(--text-secondary); }
-        .service-price { font-weight: 700; color: var(--primary-color); white-space: nowrap; margin-left: 12px; }
+        .service-price { font-weight: 700; color: var(--primary-color); font-size: 16px; }
 
         .portfolio-grid {
             display: grid;
@@ -138,27 +163,30 @@
 
         .portfolio-item {
             background: var(--card-bg);
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-color);
         }
 
         .portfolio-img {
             width: 100%;
-            height: 160px;
-            background: #ddd;
+            height: 150px;
+            background: var(--accent-bg);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666;
+            color: var(--text-secondary);
             font-size: 13px;
+            font-weight: 500;
         }
 
         .portfolio-desc {
             padding: 10px;
             font-size: 13px;
+            color: var(--text-color);
         }
 
+        /* Навигация снизу в стиле Telegram */
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -170,6 +198,7 @@
             padding: 10px 0;
             border-top: 1px solid var(--border-color);
             z-index: 100;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.03);
         }
 
         .nav-item {
@@ -178,6 +207,7 @@
             font-size: 11px;
             cursor: pointer;
             flex: 1;
+            transition: color 0.2s;
         }
 
         .nav-item.active {
@@ -190,16 +220,23 @@
             margin-bottom: 2px;
         }
 
+        /* Формы */
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-top: 6px;
             margin-bottom: 14px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--card-bg);
+            border-radius: 10px;
+            background: var(--bg-color);
             color: var(--text-color);
             font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary-color);
         }
 
         label {
@@ -212,7 +249,7 @@
 <body>
 
     <div class="header">
-        <div class="studio-title">Mari Nail Studio</div>
+        <div class="studio-title">🌿 Mari Nail Studio</div>
         <div id="user-greeting" style="font-size: 13px; color: var(--text-secondary);">Гость</div>
     </div>
 
@@ -220,42 +257,60 @@
         <!-- Главная -->
         <div id="tab-home" class="tab-content active">
             <div class="banner">
-                <h2>Скидка 15% на первый визит!</h2>
-                <p>Запишитесь онлайн через приложение и получите уход для рук в подарок.</p>
+                <h2>Эстетика и забота о вас</h2>
+                <p>Скидка 15% на первый визит при записи через мини-приложение и уход в подарок.</p>
             </div>
             
             <div class="card">
-                <h3 style="margin-bottom: 12px;">Быстрые действия</h3>
-                <button class="btn" onclick="switchTab('booking')">📅 Записаться на процедуру</button>
+                <h3 style="margin-bottom: 12px; font-size: 16px;">Быстрые действия</h3>
+                <button class="btn" onclick="switchTab('booking')">📅 Выбрать услугу и записаться</button>
                 <button class="btn btn-secondary" onclick="switchTab('portfolio')">📸 Посмотреть портфолио</button>
             </div>
 
             <div class="card">
-                <h3 style="margin-bottom: 8px;">📍 Контакты</h3>
-                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">г. Пенза, ул. 65-летия Победы</p>
-                <p style="font-size: 14px; color: var(--text-secondary);">Режим работы: Ежедневно с 9:00 до 20:00</p>
+                <h3 style="margin-bottom: 8px; font-size: 16px;">📍 Контакты студии</h3>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 6px;">г. Пенза, ул. Генерала Глазунова 11</p>
+                <p style="font-size: 14px; color: var(--text-secondary);">Ежедневно с 9:00 до 20:00</p>
             </div>
         </div>
 
-        <!-- Услуги и Онлайн-запись -->
+        <!-- Онлайн-запись с выбором услуг -->
         <div id="tab-booking" class="tab-content">
             <div class="card">
-                <h3 style="margin-bottom: 14px;">Шаг 1: Выберите услугу</h3>
-                <div class="service-item">
+                <h3 style="margin-bottom: 14px; font-size: 16px;">Шаг 1: Выберите услугу (нажатием)</h3>
+                
+                <!-- Интерактивные карточки услуг -->
+                <div class="service-card selected" id="srv-1" onclick="selectService('Маникюр + гель-лак (1800 ₽)', 'srv-1')">
                     <div class="service-info">
-                        <h4 id="service-name-1">Маникюр комбинированный + гель-лак</h4>
-                        <p>Снятие, маникюр, выравнивание, покрытие</p>
+                        <h4>Маникюр + гель-лак</h4>
+                        <p>Снятие, комби-маникюр, покрытие</p>
                     </div>
                     <div class="service-price">1800 ₽</div>
+                </div>
+
+                <div class="service-card" id="srv-2" onclick="selectService('Смарт-педикюр полный (2200 ₽)', 'srv-2')">
+                    <div class="service-info">
+                        <h4>Смарт-педикюр полный</h4>
+                        <p>Обработка дисками + пальчики</p>
+                    </div>
+                    <div class="service-price">2200 ₽</div>
+                </div>
+
+                <div class="service-card" id="srv-3" onclick="selectService('Комплекс Маникюр + Педикюр (3800 ₽)', 'srv-3')">
+                    <div class="service-info">
+                        <h4>Комплекс: Маникюр + Педикюр</h4>
+                        <p>Одновременный уход в 4 руки</p>
+                    </div>
+                    <div class="service-price">3800 ₽</div>
                 </div>
             </div>
 
             <div class="card">
-                <h3 style="margin-bottom: 14px;">Шаг 2: Выберите дату и время</h3>
+                <h3 style="margin-bottom: 14px; font-size: 16px;">Шаг 2: Дата, время и контакты</h3>
                 <label>Дата визита</label>
                 <input type="date" id="book-date">
                 
-                <label>Свободное время</label>
+                <label>Время</label>
                 <select id="book-time">
                     <option>10:00</option>
                     <option>12:30</option>
@@ -263,9 +318,11 @@
                     <option>17:30</option>
                 </select>
 
-                <label>Ваше имя и телефон</label>
-                <input type="text" id="client-name" placeholder="Ваше имя">
-                <input type="tel" id="client-phone" placeholder="+7 (900) 000-00-00">
+                <label>Ваше имя</label>
+                <input type="text" id="client-name" placeholder="Как к вам обращаться?">
+
+                <label>Номер телефона</label>
+                <input type="tel" id="client-phone" placeholder="+7 (9xx) xxx-xx-xx">
 
                 <button class="btn" onclick="makeBooking()">Подтвердить запись</button>
             </div>
@@ -273,33 +330,33 @@
 
         <!-- Портфолио -->
         <div id="tab-portfolio" class="tab-content">
-            <h3 style="margin-bottom: 12px;">Наши работы</h3>
+            <h3 style="margin-bottom: 12px; font-size: 16px;">Наши работы</h3>
             <div class="portfolio-grid">
                 <div class="portfolio-item">
-                    <div class="portfolio-img">Фото 1</div>
-                    <div class="portfolio-desc">Френч + молочный гель</div>
+                    <div class="portfolio-img">Дизайн 1</div>
+                    <div class="portfolio-desc">Френч + нюд</div>
                 </div>
                 <div class="portfolio-item">
-                    <div class="portfolio-img">Фото 2</div>
-                    <div class="portfolio-desc">Красный глянцевый нюд</div>
+                    <div class="portfolio-img">Дизайн 2</div>
+                    <div class="portfolio-desc">Глубокий изумруд</div>
                 </div>
             </div>
         </div>
 
         <!-- Новинки -->
         <div id="tab-news" class="tab-content">
-            <h3 style="margin-bottom: 12px;">Новинки сезона</h3>
+            <h3 style="margin-bottom: 12px; font-size: 16px;">Тренды сезона</h3>
             <div class="card">
-                <h4>✨ Коллекция «Кошачий глаз 5D»</h4>
-                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 6px;">Новые переливающиеся оттенки.</p>
+                <h4>✨ Эко-маникюр и уход</h4>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-top: 6px;">Восстановление натуральной пластины.</p>
             </div>
         </div>
 
         <!-- Кабинет -->
         <div id="tab-profile" class="tab-content">
             <div class="card">
-                <h3>Статус записи</h3>
-                <div id="my-bookings" style="font-size: 14px; color: var(--text-secondary); margin-top: 10px;">
+                <h3 style="font-size: 16px; margin-bottom: 8px;">Статус заявки</h3>
+                <div id="my-bookings" style="font-size: 14px; color: var(--text-secondary);">
                     Вы еще не оставляли заявок в этой сессии.
                 </div>
             </div>
@@ -336,6 +393,17 @@
             document.body.classList.add('dark');
         }
 
+        // Хранение выбранной услуги (по умолчанию первая)
+        let selectedService = "Маникюр + гель-лак (1800 ₽)";
+
+        function selectService(serviceName, elementId) {
+            selectedService = serviceName;
+            // Убираем выделение со всех карточек
+            document.querySelectorAll('.service-card').forEach(el => el.classList.remove('selected'));
+            // Выделяем нажатую карточку
+            document.getElementById(elementId).classList.add('selected');
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -346,7 +414,6 @@
         }
 
         function makeBooking() {
-            const service = "Маникюр комбинированный + гель-лак";
             const date = document.getElementById('book-date').value;
             const time = document.getElementById('book-time').value;
             const name = document.getElementById('client-name').value;
@@ -357,37 +424,34 @@
                 return;
             }
 
-            // Упаковываем данные для отправки боту
             const bookingData = {
-                service: service,
+                service: selectedService,
                 date: date,
                 time: time,
                 clientName: name,
                 clientPhone: phone
             };
 
-            // Отправляем данные в Telegram бот
             if (window.Telegram && window.Telegram.WebApp) {
-                tg.sendData(JSON.stringify(bookingData)); // Передает данные в bot.py
+                tg.sendData(JSON.stringify(bookingData));
             } else {
                 alert('Ошибка: открыто не в Telegram!');
                 return;
             }
 
-            // Визуальное подтверждение для пользователя
+            // Понятное отображение статуса записи для пользователя в Кабинете
             document.getElementById('my-bookings').innerHTML = `
-                <div style="background: rgba(232, 62, 140, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                <div style="background: var(--accent-bg); padding: 12px; border-radius: 10px; border-left: 3px solid var(--primary-color);">
                     <strong style="color: var(--primary-color);">✅ Запись успешно оформлена!</strong><br>
-                    <strong>Услуга:</strong> ${service}<br>
+                    <strong>Услуга:</strong> ${selectedService}<br>
                     <strong>Дата:</strong> ${date} в ${time}<br>
-                    <strong>Клиент:</strong> ${name} (${phone})<br><br>
+                    <strong>Имя:</strong> ${name} (${phone})<br><br>
                     <em>Информация отправлена мастеру. Окно закроется автоматически...</em>
                 </div>
             `;
             
             switchTab('profile');
 
-            // Автоматически закрываем WebApp через 2.5 секунды, чтобы пользователь вернулся в чат
             setTimeout(function() {
                 tg.close();
             }, 2500);
